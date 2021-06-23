@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" 
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" 
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+
+    <script src="js/perlin.js"></script>
+    <style>
+        body {
+            background-color: black;
+            /* display: flex; */
+            position: relative;
+            /* justify-content: center; */
+        }
+
+        canvas.perlin-canvas {
+            /* transform: perspective(400px) scaleX(2.3) rotateX(70deg); */
+            position: relative;
+            display: inline;
+        }
+    </style>
+    <script>
+        $().ready(init);
+
+        async function init()
+        {
+            let canvas = await stitch_me_up();
+            let c2 = create_canvas();
+            console.log(canvas);
+            let ctx1 = canvas.getContext("2d");
+            let img_data = ctx1.getImageData(0,0,800,600);
+            let ctx2 = c2.getContext("2d");
+            ctx2.putImageData(img_data, 0, 0);
+            // let img_data2 = ctx2.createImageData(800, 600);
+            // let img_data2_data = new Uint8ClampedArray(img_data.data);
+            // img_data2.data.set(img_data.data);
+
+            console.log(img_data.data[6]);
+        }
+
+        async function stitch_me_up()
+        {
+            let canvas = create_canvas();
+            let context = canvas.getContext("2d");
+            let img_data = context.createImageData(800, 600);
+            let perlin_1 = new __Perlin_Options(true, true, 255, false, false, new __RGBA_Tint(255, 0, 128, 255), true, true, true, false);
+            // let perlin_2 = new __Perlin_Options(true, true, 128, true, true, new __RGBA_Tint(255, 255, 128, 255), true, true, true, false);
+            // perlin_noise(img_data, 6, 32, perlin_1);
+            // perlin_noise(img_data, 12, 64, perlin_2);
+            console.log(canvas);
+            perlin_noise(img_data, 4, 10, perlin_1);
+            // perlin_noise(img_data, 8, 20, perlin_2);
+            // multiply_top_to_bottom(.05, 0.5, img_data);
+            console.log(canvas);
+            context.putImageData(img_data, 0, 0);
+            console.log(canvas);
+            return canvas;
+        }
+
+        function create_canvas()
+        {
+            let canvas = document.createElement("canvas");
+            canvas.setAttribute("width", "800");
+            canvas.setAttribute("height", "600");
+            $(canvas).addClass("perlin-canvas");
+            $("body").append(canvas);
+            return canvas;
+        }
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
